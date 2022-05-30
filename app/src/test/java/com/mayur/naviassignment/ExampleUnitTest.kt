@@ -1,4 +1,4 @@
-package com.mayur.naviassigment
+package com.mayur.naviassignment
 
 import org.junit.Test
 

@@ -1,4 +1,4 @@
-package com.mayur.naviassigment.ui.theme
+package com.mayur.naviassignment.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
