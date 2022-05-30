@@ -1,6 +1,7 @@
 package com.mayur.naviassignment.data
 
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -27,14 +28,18 @@ val retrofit: Retrofit by lazy {
     Retrofit.Builder()
         .client(okHttpClient)
         .baseUrl(API_BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create(gson))
         .build()
 }
 
-val retrofitGson: Gson by lazy {
-    Gson()
+val gson: Gson by lazy {
+    GsonBuilder()
+        .setDateFormat(DATE_FORMAT)
+        .create()
 }
 
 inline fun <reified T> create(): T {
     return retrofit.create(T::class.java)
 }
+
+const val DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'"
