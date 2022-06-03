@@ -6,6 +6,7 @@ import java.util.*
 class PullRequest(
     val id: Long,
     val title: String,
+    val number: Long,
     val user: User,
 
     @SerializedName("created_at")

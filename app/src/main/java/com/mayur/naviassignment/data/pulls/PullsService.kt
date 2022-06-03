@@ -12,5 +12,6 @@ interface PullsService {
         @Path("owner") owner: String,
         @Path("repo") repo: String,
         @Query("state") state: String,
+        @Query("page") page: Int = 1,
     ): Response<List<PullRequest>>
 }
