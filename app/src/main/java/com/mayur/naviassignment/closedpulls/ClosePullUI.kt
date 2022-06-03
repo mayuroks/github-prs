@@ -17,7 +17,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.mayur.naviassignment.data.pulls.Head
 import com.mayur.naviassignment.data.pulls.PullRequest
+import com.mayur.naviassignment.data.pulls.Repo
 import com.mayur.naviassignment.data.pulls.User
 import naviassignment.R
 import java.text.SimpleDateFormat
@@ -42,7 +44,7 @@ fun ClosePullUI(pull: PullRequest, sdf: SimpleDateFormat) {
             .clip(RoundedCornerShape(14.dp)),
         shape = RoundedCornerShape(8.dp)
     ) {
-        Column(modifier = Modifier.background(Color(0xFFF5F5F5))) {
+        Column(modifier = Modifier.background(Color(0xFFF5F5F5 ))) {
             Row(modifier = Modifier.padding(12.dp)) {
                 AsyncImage(
                     modifier = Modifier
@@ -66,7 +68,6 @@ fun ClosePullUI(pull: PullRequest, sdf: SimpleDateFormat) {
     }
 }
 
-//@Preview
 @Composable
 fun ClosedPullUIPreview() {
     val pullRequest = PullRequest(
@@ -75,7 +76,8 @@ fun ClosedPullUIPreview() {
         number = 38920,
         User("aeawewe", username = "kandersen"),
         createdAt = Date(),
-        closedAt = Date()
+        closedAt = Date(),
+        head = Head(Repo(fullName = "Docker-go/go-utils"))
     )
     val sdf = SimpleDateFormat("d MMMM yy")
 
@@ -94,7 +96,8 @@ fun ClosedPullsUIPreview() {
         number = 38920,
         User("aeawewe", username = "kandersen"),
         createdAt = Date(),
-        closedAt = Date()
+        closedAt = Date(),
+        head = Head(Repo(fullName = "Docker-go/go-utils"))
     )
     val sdf = SimpleDateFormat("d MMMM yy")
 

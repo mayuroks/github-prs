@@ -10,23 +10,14 @@ import kotlinx.coroutines.launch
 
 class PullsViewModel(private val repository: PullsRepository): ViewModel() {
     var pulls = mutableStateOf<List<PullRequest>?>(listOf())
+    var pullsIsLoading = mutableStateOf(false)
 
     fun getPulls() {
         viewModelScope.launch {
             with(repository.getPulls()) {
                 when {
-                    isSuccess() -> {
-                        println(
-                            "result?.createdAt ${result?.getOrNull(0)?.createdAt}" +
-                                    " result?.user ${result?.getOrNull(0)?.user}"
-                        )
-
-                        pulls.value = result
-                    }
-                    isError() ->  {
-
-                    }
-
+                    isSuccess() -> pulls.value = result
+                    isError() ->  {}
                     inProgress() -> {}
                 }
             }
