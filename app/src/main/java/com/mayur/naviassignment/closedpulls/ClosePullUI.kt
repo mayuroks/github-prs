@@ -39,7 +39,8 @@ fun ClosePullUI(pull: PullRequest, sdf: SimpleDateFormat) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 2.dp, horizontal = 6.dp)
-            .clip(RoundedCornerShape(14.dp))
+            .clip(RoundedCornerShape(14.dp)),
+        shape = RoundedCornerShape(8.dp)
     ) {
         Column(modifier = Modifier.background(Color(0xFFF5F5F5))) {
             Row(modifier = Modifier.padding(12.dp)) {
