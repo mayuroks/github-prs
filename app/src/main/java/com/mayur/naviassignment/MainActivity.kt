@@ -14,10 +14,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mayur.naviassignment.components.setContentWithAppTheme
-import com.mayur.naviassignment.data.RepoProvider
-import com.mayur.naviassignment.pulls.PullsViewModel
-import com.mayur.naviassignment.ui.closedpulls.ClosePullsUI
+import com.mayur.naviassignment.ui.pulls.ClosePullsUI
+import com.mayur.naviassignment.ui.pulls.PullsViewModel
 import com.mayur.naviassignment.ui.theme.NaviAssignmentTheme
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 
 // TODO
@@ -26,12 +26,10 @@ import java.text.SimpleDateFormat
 // pagination
 // use flow
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    val sdf = SimpleDateFormat("d MMMM yy")
-
-    private val viewModel by viewModels<PullsViewModel> {
-        PullsViewModel.Factory(RepoProvider.pullsRepository)
-    }
+    private val viewModel: PullsViewModel by viewModels()
+    private val sdf = SimpleDateFormat("d MMMM yy")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

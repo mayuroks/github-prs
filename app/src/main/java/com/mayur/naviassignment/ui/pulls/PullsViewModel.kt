@@ -1,4 +1,4 @@
-package com.mayur.naviassignment.pulls
+package com.mayur.naviassignment.ui.pulls
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -6,9 +6,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.mayur.naviassignment.data.pulls.PullRequest
 import com.mayur.naviassignment.data.pulls.PullsRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PullsViewModel(private val repository: PullsRepository): ViewModel() {
+@HiltViewModel
+class PullsViewModel @Inject constructor(private val repository: PullsRepository): ViewModel() {
     var pulls = mutableStateOf<List<PullRequest>?>(listOf())
     var pullsIsLoading = mutableStateOf(false)
 
