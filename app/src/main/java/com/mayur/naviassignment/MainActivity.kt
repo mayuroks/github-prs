@@ -29,7 +29,7 @@ import java.text.SimpleDateFormat
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val viewModel: PullsViewModel by viewModels()
-    private val sdf = SimpleDateFormat("d MMMM yy")
+    private val sdf by lazy { SimpleDateFormat("d MMMM yy") }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
