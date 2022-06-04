@@ -1,4 +1,4 @@
-package com.mayur.naviassignment.closedpulls
+package com.mayur.naviassignment.ui.closedpulls
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

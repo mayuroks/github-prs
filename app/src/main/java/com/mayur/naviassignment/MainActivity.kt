@@ -13,12 +13,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mayur.naviassignment.closedpulls.ClosePullsUI
 import com.mayur.naviassignment.components.setContentWithAppTheme
 import com.mayur.naviassignment.data.RepoProvider
 import com.mayur.naviassignment.pulls.PullsViewModel
+import com.mayur.naviassignment.ui.closedpulls.ClosePullsUI
 import com.mayur.naviassignment.ui.theme.NaviAssignmentTheme
 import java.text.SimpleDateFormat
+
 // TODO
 // beautify card (text style and theme colors)
 // show data based on progress etc.
