@@ -7,7 +7,7 @@ import javax.inject.Singleton
 
 @Singleton
 class PullsRepository @Inject constructor(private val pullsService: PullsService) {
-    suspend fun getPulls(): AsyncResult<List<PullRequest>> {
-        return apiCall { pullsService.getPulls("docker-library", "golang", "closed") }
+    suspend fun getPulls(owner: String, repo: String, state: String, page: Int): AsyncResult<List<PullRequest>> {
+        return apiCall { pullsService.getPulls(owner, repo, state, page) }
     }
 }

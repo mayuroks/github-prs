@@ -26,10 +26,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
-fun ClosePullsUI(pulls: List<PullRequest>, sdf: SimpleDateFormat) {
+fun ClosePullsUI(pulls: List<PullRequest?>, sdf: SimpleDateFormat) {
     LazyColumn {
         items(pulls) { pull ->
-            ClosePullUI(pull, sdf)
+            pull?.let { ClosePullUI(it, sdf) }
         }
     }
 }
