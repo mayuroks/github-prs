@@ -14,35 +14,32 @@ class PullsPagingSource @Inject constructor(
     var state = "closed"
 
     override fun getRefreshKey(state: PagingState<Int, PullRequest>): Int? {
-        return null
+        println("PagingSource getRefreshKey called")
+        return state.anchorPosition?.let { anchorPosition ->
+            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
+                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
+        }
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PullRequest> {
-        if (owner.isBlank() or repo.isBlank() or state.isBlank()) {
-            return LoadResult.Error(Exception("Some data is empty"))
-        }
+
+//        if (owner.isBlank() or repo.isBlank() or state.isBlank()) {
+//            return LoadResult.Error(Exception("Some data is empty"))
+//        }
 
         val nextPage = params?.key ?: 1
-
-        with(repository.getPulls(owner, repo, state, nextPage)) {
-            return when {
-                isSuccess() -> {
-                    if (result != null) {
-                        LoadResult.Page(
-                            data = result,
-                            prevKey =
-                            if (nextPage == 1) null else nextPage - 1,
-                            nextKey = nextPage.plus(1)
-                        )
-                    } else {
-                        LoadResult.Error(
-                            Exception("Some data is empty")
-                        )
-                    }
-                }
-                else ->
-                    LoadResult.Error(Exception("Some data is empty"))
-            }
+        println("PagingSource load called nextPage $nextPage")
+        val response = repository.getPulls(owner, repo, state, nextPage)
+        return if (response.isSuccess() && response.result != null) {
+            LoadResult.Page(
+                data = response.result,
+                prevKey = if (nextPage == 1) null else nextPage - 1,
+                nextKey = nextPage.plus(1)
+            )
+        } else {
+            LoadResult.Error(
+                Exception("Some data is empty")
+            )
         }
     }
 

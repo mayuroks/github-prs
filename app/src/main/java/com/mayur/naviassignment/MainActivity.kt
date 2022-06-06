@@ -78,7 +78,7 @@ fun MainUI(viewModel: PullsViewModel, sdf: SimpleDateFormat) {
         }
 
 
-        ClosePullsUI(pulls.itemSnapshotList.toList(), sdf)
+        ClosePullsUI(pulls, sdf)
     }
 }
 
