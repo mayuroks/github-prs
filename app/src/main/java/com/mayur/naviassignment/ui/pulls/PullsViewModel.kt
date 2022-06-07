@@ -20,21 +20,21 @@ class PullsViewModel @Inject constructor(
     private val pagingSource: PullsPagingSource
 ) : ViewModel() {
 
-    var pagingState = mutableStateOf<PagingState>(PagingState.Success)
-    private var closedPRRequest = ClosedPRRequest("", "", "")
+    val pagingState = mutableStateOf<PagingState>(PagingState.Success)
+    val closedPRRequest = mutableStateOf(ClosedPRRequest("", "", ""))
 
     var pulls: Flow<PagingData<PullRequest>> =
         Pager(PagingConfig(ITEMS_PER_PAGE)) {
             pagingSource.apply {
-                viewModelScope.launch { updateQueryParams(closedPRRequest) }
+                viewModelScope.launch { updateQueryParams(closedPRRequest.value) }
             }
         }.flow
 
-    fun setQueryParams(owner: String, repo: String, state: String) {
-        closedPRRequest = ClosedPRRequest(owner, repo, state)
+    fun getClosedPRs(request: ClosedPRRequest) {
+        closedPRRequest.value = request
         pulls = Pager(PagingConfig(ITEMS_PER_PAGE)) {
             pagingSource.apply {
-                viewModelScope.launch { updateQueryParams(closedPRRequest) }
+                viewModelScope.launch { updateQueryParams(closedPRRequest.value) }
             }
         }.flow
     }

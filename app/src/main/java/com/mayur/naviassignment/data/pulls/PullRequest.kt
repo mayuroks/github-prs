@@ -30,6 +30,12 @@ class ClosedPRRequest(
     val state: String = CLOSED
 ) {
     fun isBlank() = owner.isBlank() or repo.isBlank() or state.isBlank()
+
+    companion object {
+        fun getInitialRepo(): ClosedPRRequest {
+            return ClosedPRRequest("freeCodeCamp", "freeCodeCamp", "closed")
+        }
+    }
 }
 
 const val CLOSED = "closed"

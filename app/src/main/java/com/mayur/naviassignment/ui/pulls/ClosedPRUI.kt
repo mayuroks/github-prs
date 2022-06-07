@@ -8,6 +8,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -17,15 +19,32 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
+import com.mayur.naviassignment.components.ErrorUI
 import com.mayur.naviassignment.components.LoadingItem
-import com.mayur.naviassignment.data.pulls.Head
-import com.mayur.naviassignment.data.pulls.PullRequest
-import com.mayur.naviassignment.data.pulls.Repo
-import com.mayur.naviassignment.data.pulls.User
+import com.mayur.naviassignment.components.showShortToast
+import com.mayur.naviassignment.data.pulls.*
 import naviassignment.R
 import java.text.SimpleDateFormat
 import java.util.*
+
+
+@Composable
+fun ClosedPRsUI(viewModel: PullsViewModel, sdf: SimpleDateFormat) {
+    val pulls = viewModel.pulls.collectAsLazyPagingItems()
+    val pagingState by viewModel.pagingState
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.getClosedPRs(ClosedPRRequest.getInitialRepo())
+    }
+
+    when (pagingState) {
+        PagingState.AppendError -> showShortToast("More items cant be added")
+        PagingState.RefreshError -> ErrorUI { viewModel.getClosedPRs(ClosedPRRequest.getInitialRepo()) }
+        PagingState.Success -> ClosedPRListUI(viewModel, pulls, sdf)
+    }
+}
 
 @Composable
 fun ClosedPRListUI(
@@ -50,8 +69,6 @@ fun ClosedPRListUI(
             }
             pulls.loadState.refresh is LoadState.Error -> {
                 viewModel.handlePagingDataError()
-
-                println("pulls.loadState.refresh is LoadState.Error")
             }
         }
     }
