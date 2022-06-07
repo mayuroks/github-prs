@@ -8,6 +8,7 @@ data class AsyncResult<T>(
 ) {
 
     fun isSuccess() = resultState == ResultState.SUCCESS
+    fun isSuccessNonNull() = resultState == ResultState.SUCCESS && result != null
     fun isError() = resultState == ResultState.ERROR
     fun inProgress() = resultState == ResultState.IN_PROGRESS
 

@@ -24,6 +24,14 @@ class Repo(
     val fullName: String
 )
 
-enum class PullState {
-    closed, open, all
+class ClosedPRRequest(
+    val owner: String,
+    val repo: String,
+    val state: String = CLOSED
+) {
+    fun isBlank() = owner.isBlank() or repo.isBlank() or state.isBlank()
 }
+
+const val CLOSED = "closed"
+const val OPEN = "open"
+const val ALL = "all"

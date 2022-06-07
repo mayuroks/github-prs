@@ -7,7 +7,11 @@ import javax.inject.Singleton
 
 @Singleton
 class PullsRepository @Inject constructor(private val pullsService: PullsService) {
-    suspend fun getPulls(owner: String, repo: String, state: String, page: Int): AsyncResult<List<PullRequest>> {
-        return apiCall { pullsService.getPulls(owner, repo, state, page) }
+    suspend fun getPulls(closedPRRequest: ClosedPRRequest, page: Int): AsyncResult<List<PullRequest>> {
+        return apiCall {
+            with(closedPRRequest) {
+                pullsService.getPulls(owner, repo, state, page)
+            }
+        }
     }
 }

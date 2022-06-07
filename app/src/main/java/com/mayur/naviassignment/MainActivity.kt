@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,14 +44,18 @@ fun MainUI(viewModel: PullsViewModel, sdf: SimpleDateFormat) {
     // TODO Test code to refresh paged list
 //    LaunchedEffect(key1 = Unit) {
 //        delay(2000)
-//        viewModel.updateQueryParams("freeCodeCamp", "freeCodeCamp", "closed")
+//        viewModel.setQueryParams("freeCodeCamp", "freeCodeCamp", "closed")
 //
 //        delay(2000)
-//        viewModel.updateQueryParams("996icu", "996.ICU", "closed")
+//        viewModel.setQueryParams("996icu", "996.ICU", "closed")
 //
 //        delay(2000)
-//        viewModel.updateQueryParams("vuejs", "vue", "closed")
+//        viewModel.setQueryParams("vuejs", "vue", "closed")
 //    }
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.setQueryParams("freeCodeCamp", "freeCodeCamp", "closed")
+    }
 
     Column {
         Spacer(modifier = Modifier.padding(12.dp))

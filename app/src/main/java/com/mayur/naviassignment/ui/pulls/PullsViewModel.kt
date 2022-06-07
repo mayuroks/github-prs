@@ -6,8 +6,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.mayur.naviassignment.data.pulls.ClosedPRRequest
 import com.mayur.naviassignment.data.pulls.PullRequest
-import com.mayur.naviassignment.data.pulls.PullsRepository
+import com.mayur.naviassignment.ui.pulls.PullsPagingSource.Companion.ITEMS_PER_PAGE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -15,38 +16,33 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PullsViewModel @Inject constructor(
-    private val repository: PullsRepository,
     private val pagingSource: PullsPagingSource
-): ViewModel() {
+) : ViewModel() {
 
-    // TODO convert to object
-    // Pass default from UI
-    var owner = "docker-library"
-    var repo = "golang"
-    var state = "closed"
+    private var closedPRRequest = ClosedPRRequest("", "", "")
 
     var pulls: Flow<PagingData<PullRequest>> =
-        Pager(PagingConfig(ITEMS_PER_PAGE)) { pagingSource.apply {
-            viewModelScope.launch { updateQueryParams(owner, repo, state) }
-        } }.flow
+        Pager(PagingConfig(ITEMS_PER_PAGE)) {
+            pagingSource.apply {
+                viewModelScope.launch { updateQueryParams(closedPRRequest) }
+            }
+        }.flow
 
-    fun updateQueryParams(owner: String, repo: String, state: String) {
-        pulls = Pager(PagingConfig(ITEMS_PER_PAGE)) { pagingSource.apply {
-            viewModelScope.launch { updateQueryParams(owner, repo, state) }
-        } }.flow
+    fun setQueryParams(owner: String, repo: String, state: String) {
+        closedPRRequest = ClosedPRRequest(owner, repo, state)
+        pulls = Pager(PagingConfig(ITEMS_PER_PAGE)) {
+            pagingSource.apply {
+                viewModelScope.launch { updateQueryParams(closedPRRequest) }
+            }
+        }.flow
     }
 
     class Factory(
-        private val repository: PullsRepository,
         private val pagingSource: PullsPagingSource
     ) : ViewModelProvider.NewInstanceFactory() {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return PullsViewModel(repository, pagingSource) as T
+            return PullsViewModel(pagingSource) as T
         }
-    }
-
-    companion object {
-        const val ITEMS_PER_PAGE = 40
     }
 }
