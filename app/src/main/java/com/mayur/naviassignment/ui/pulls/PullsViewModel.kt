@@ -1,5 +1,6 @@
 package com.mayur.naviassignment.ui.pulls
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -19,6 +20,7 @@ class PullsViewModel @Inject constructor(
     private val pagingSource: PullsPagingSource
 ) : ViewModel() {
 
+    var pagingState = mutableStateOf<PagingState>(PagingState.Success)
     private var closedPRRequest = ClosedPRRequest("", "", "")
 
     var pulls: Flow<PagingData<PullRequest>> =
@@ -38,11 +40,11 @@ class PullsViewModel @Inject constructor(
     }
 
     fun handlePagingAppendError() {
-        TODO("Not yet implemented")
+        pagingState.value = PagingState.AppendError
     }
 
     fun handlePagingDataError() {
-        TODO("Not yet implemented")
+        pagingState.value = PagingState.RefreshError
     }
 
     class Factory(

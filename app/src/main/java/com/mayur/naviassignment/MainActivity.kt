@@ -9,12 +9,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.mayur.naviassignment.components.ErrorUI
 import com.mayur.naviassignment.components.setContentWithAppTheme
+import com.mayur.naviassignment.components.showShortToast
 import com.mayur.naviassignment.ui.pulls.ClosedPRListUI
+import com.mayur.naviassignment.ui.pulls.PagingState.*
 import com.mayur.naviassignment.ui.pulls.PullsViewModel
 import com.mayur.naviassignment.ui.theme.NaviAssignmentTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,6 +43,11 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainUI(viewModel: PullsViewModel, sdf: SimpleDateFormat) {
     val pulls = viewModel.pulls.collectAsLazyPagingItems()
+    val pagingState by viewModel.pagingState
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.setQueryParams("freeCodeCamp", "freeCodeCamp", "closed")
+    }
 
     // TODO Test code to refresh paged list
 //    LaunchedEffect(key1 = Unit) {
@@ -52,17 +61,21 @@ fun MainUI(viewModel: PullsViewModel, sdf: SimpleDateFormat) {
 //        viewModel.setQueryParams("vuejs", "vue", "closed")
 //    }
 
-    LaunchedEffect(key1 = Unit) {
-        viewModel.setQueryParams("freeCodeCamp", "freeCodeCamp", "closed")
-    }
-
-//    ErrorUI {
-//        viewModel.setQueryParams("freeCodeCamp", "freeCodeCamp", "closed")
-//    }
-
-    Column {
-        Spacer(modifier = Modifier.padding(12.dp))
-        ClosedPRListUI(viewModel, pulls, sdf)
+    when (pagingState) {
+        AppendError -> {
+            showShortToast("More items cant be added")
+        }
+        RefreshError -> {
+            ErrorUI {
+                viewModel.setQueryParams("freeCodeCamp", "freeCodeCamp", "closed")
+            }
+        }
+        Success -> {
+            Column {
+                Spacer(modifier = Modifier.padding(12.dp))
+                ClosedPRListUI(viewModel, pulls, sdf)
+            }
+        }
     }
 }
 
