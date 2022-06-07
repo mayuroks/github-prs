@@ -20,7 +20,7 @@ class PullsViewModel @Inject constructor(
     private val pagingSource: PullsPagingSource
 ) : ViewModel() {
 
-    val pagingState = mutableStateOf<PagingState>(PagingState.Success)
+    val pagingState = mutableStateOf<PagingState>(PagingState.Loading())
     val closedPRRequest = mutableStateOf(ClosedPRRequest("", "", ""))
 
     var pulls: Flow<PagingData<PullRequest>> =
@@ -39,12 +39,16 @@ class PullsViewModel @Inject constructor(
         }.flow
     }
 
-    fun handlePagingAppendError() {
-        pagingState.value = PagingState.AppendError
+    fun handlePagingLoading() {
+        pagingState.value = PagingState.Loading()
     }
 
-    fun handlePagingDataError() {
-        pagingState.value = PagingState.RefreshError
+    fun handlePagingAppendError() {
+        pagingState.value = PagingState.AppendError()
+    }
+
+    fun handlePagingRefreshError() {
+        pagingState.value = PagingState.RefreshError()
     }
 
     class Factory(
