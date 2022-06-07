@@ -15,8 +15,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import coil.compose.AsyncImage
+import com.mayur.naviassignment.components.LoadingItem
 import com.mayur.naviassignment.data.pulls.Head
 import com.mayur.naviassignment.data.pulls.PullRequest
 import com.mayur.naviassignment.data.pulls.Repo
@@ -26,16 +28,37 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
-fun ClosePullsUI(pulls: LazyPagingItems<PullRequest>, sdf: SimpleDateFormat) {
+fun ClosedPRListUI(
+    viewModel: PullsViewModel,
+    pulls: LazyPagingItems<PullRequest>,
+    sdf: SimpleDateFormat
+) {
     LazyColumn {
         items(pulls.itemCount) { index ->
-            ClosePullUI(pulls[index], sdf)
+            ClosedPRItemUI(pulls[index], sdf)
+        }
+
+        when {
+            pulls.loadState.append is LoadState.Loading -> {
+                item { LoadingItem() }
+            }
+            pulls.loadState.refresh is LoadState.Loading -> {
+                item { LoadingItem() }
+            }
+            pulls.loadState.append is LoadState.Error -> {
+                viewModel.handlePagingAppendError()
+            }
+            pulls.loadState.refresh is LoadState.Error -> {
+                viewModel.handlePagingDataError()
+
+                println("pulls.loadState.refresh is LoadState.Error")
+            }
         }
     }
 }
 
 @Composable
-fun ClosePullUI(pull: PullRequest?, sdf: SimpleDateFormat) {
+fun ClosedPRItemUI(pull: PullRequest?, sdf: SimpleDateFormat) {
     if (pull == null) return
 
     Card(
@@ -83,7 +106,7 @@ fun ClosedPullUIPreview() {
     )
     val sdf = SimpleDateFormat("d MMMM yy")
 
-    ClosePullUI(
+    ClosedPRItemUI(
         pull = pullRequest,
         sdf = sdf
     )

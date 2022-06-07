@@ -12,10 +12,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.mayur.naviassignment.components.setContentWithAppTheme
-import com.mayur.naviassignment.ui.pulls.ClosePullsUI
+import com.mayur.naviassignment.ui.pulls.ClosedPRListUI
 import com.mayur.naviassignment.ui.pulls.PullsViewModel
 import com.mayur.naviassignment.ui.theme.NaviAssignmentTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,25 +56,13 @@ fun MainUI(viewModel: PullsViewModel, sdf: SimpleDateFormat) {
         viewModel.setQueryParams("freeCodeCamp", "freeCodeCamp", "closed")
     }
 
+//    ErrorUI {
+//        viewModel.setQueryParams("freeCodeCamp", "freeCodeCamp", "closed")
+//    }
+
     Column {
         Spacer(modifier = Modifier.padding(12.dp))
-
-        when {
-            pulls.loadState.append is LoadState.Loading -> {
-                println("pulls.loadState.append is LoadState.Loading")
-            }
-            pulls.loadState.refresh is LoadState.Loading -> {
-                println("pulls.loadState.refresh is LoadState.Loading")
-            }
-            pulls.loadState.append is LoadState.Error -> {
-                println("pulls.loadState.append is LoadState.Error")
-            }
-            pulls.loadState.refresh is LoadState.Error -> {
-                println("pulls.loadState.refresh is LoadState.Error")
-            }
-        }
-
-        ClosePullsUI(pulls, sdf)
+        ClosedPRListUI(viewModel, pulls, sdf)
     }
 }
 

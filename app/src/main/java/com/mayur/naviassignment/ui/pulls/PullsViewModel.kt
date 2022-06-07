@@ -37,6 +37,14 @@ class PullsViewModel @Inject constructor(
         }.flow
     }
 
+    fun handlePagingAppendError() {
+        TODO("Not yet implemented")
+    }
+
+    fun handlePagingDataError() {
+        TODO("Not yet implemented")
+    }
+
     class Factory(
         private val pagingSource: PullsPagingSource
     ) : ViewModelProvider.NewInstanceFactory() {
