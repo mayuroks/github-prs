@@ -9,9 +9,14 @@ import javax.inject.Inject
 class PullsPagingSource @Inject constructor(
     private val repository: PullsRepository
 ) : PagingSource<Int, PullRequest>() {
-    var owner = "docker-library"
-    var repo = "golang"
-    var state = "closed"
+//    var owner = "docker-library"
+//    var repo = "golang"
+//    var state = "closed"
+
+    private var owner = ""
+    private var repo = ""
+    private var state = ""
+
 
     override fun getRefreshKey(state: PagingState<Int, PullRequest>): Int? {
         return null
@@ -46,9 +51,12 @@ class PullsPagingSource @Inject constructor(
         }
     }
 
-    fun updateRepoParas(owner: String, repo: String, state: String) {
+    suspend fun updateQueryParams(owner: String, repo: String, state: String) {
         this.owner = owner
         this.repo = repo
         this.state = state
+
+        val loadParams = LoadParams.Refresh<Int>(0, 30, false)
+        load(loadParams)
     }
 }

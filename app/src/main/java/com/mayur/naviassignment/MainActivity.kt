@@ -20,12 +20,6 @@ import com.mayur.naviassignment.ui.theme.NaviAssignmentTheme
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 
-// TODO
-// beautify card (text style and theme colors)
-// show data based on progress etc.
-// pagination
-// use flow
-
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val viewModel: PullsViewModel by viewModels()
@@ -45,21 +39,20 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainUI(viewModel: PullsViewModel, sdf: SimpleDateFormat) {
     val pulls = viewModel.pulls.collectAsLazyPagingItems()
-//    var txt = ""
 
+    // TODO Test code to refresh paged list
 //    LaunchedEffect(key1 = Unit) {
-//        viewModel.getPulls()
+//        delay(2000)
+//        viewModel.updateQueryParams("freeCodeCamp", "freeCodeCamp", "closed")
+//
+//        delay(2000)
+//        viewModel.updateQueryParams("996icu", "996.ICU", "closed")
+//
+//        delay(2000)
+//        viewModel.updateQueryParams("vuejs", "vue", "closed")
 //    }
 
-//    pulls?.getOrNull(0)?.head?.repo?.fullName?.let {
-//        txt = "Showing closed pulls requests for $it"
-//    } ?: run { txt = "No closed pulls found" }
-
     Column {
-//        Text(
-//            text = txt,
-//            modifier = Modifier.padding(start = 12.dp, end = 12.dp, top = 12.dp, bottom = 0.dp)
-//        )
         Spacer(modifier = Modifier.padding(12.dp))
 
         when {
@@ -77,8 +70,7 @@ fun MainUI(viewModel: PullsViewModel, sdf: SimpleDateFormat) {
             }
         }
 
-
-        ClosePullsUI(pulls.itemSnapshotList.toList(), sdf)
+        ClosePullsUI(pulls, sdf)
     }
 }
 

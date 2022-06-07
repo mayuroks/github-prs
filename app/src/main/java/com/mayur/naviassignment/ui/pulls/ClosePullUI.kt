@@ -3,7 +3,6 @@ package com.mayur.naviassignment.ui.pulls
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -16,6 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.paging.compose.LazyPagingItems
 import coil.compose.AsyncImage
 import com.mayur.naviassignment.data.pulls.Head
 import com.mayur.naviassignment.data.pulls.PullRequest
@@ -26,17 +26,18 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
-fun ClosePullsUI(pulls: List<PullRequest?>, sdf: SimpleDateFormat) {
+fun ClosePullsUI(pulls: LazyPagingItems<PullRequest>, sdf: SimpleDateFormat) {
     LazyColumn {
-        items(pulls) { pull ->
-            pull?.let { ClosePullUI(it, sdf) }
+        items(pulls.itemCount) { index ->
+            ClosePullUI(pulls[index], sdf)
         }
     }
 }
 
-
 @Composable
-fun ClosePullUI(pull: PullRequest, sdf: SimpleDateFormat) {
+fun ClosePullUI(pull: PullRequest?, sdf: SimpleDateFormat) {
+    if (pull == null) return
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -68,6 +69,7 @@ fun ClosePullUI(pull: PullRequest, sdf: SimpleDateFormat) {
     }
 }
 
+@Preview
 @Composable
 fun ClosedPullUIPreview() {
     val pullRequest = PullRequest(
@@ -85,23 +87,4 @@ fun ClosedPullUIPreview() {
         pull = pullRequest,
         sdf = sdf
     )
-}
-
-@Preview
-@Composable
-fun ClosedPullsUIPreview() {
-    val pullRequest = PullRequest(
-        id = 12121,
-        title = "IR] RFC: Have JVM codegen respect the GenerateClassFilter supplied to GenerationState",
-        number = 38920,
-        User("aeawewe", username = "kandersen"),
-        createdAt = Date(),
-        closedAt = Date(),
-        head = Head(Repo(fullName = "Docker-go/go-utils"))
-    )
-    val sdf = SimpleDateFormat("d MMMM yy")
-
-    val pulls = listOf(pullRequest, pullRequest, pullRequest)
-
-    ClosePullsUI(pulls = pulls, sdf = sdf)
 }
