@@ -16,7 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
-import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.LazyPagingItems
 import coil.compose.AsyncImage
 import com.mayur.naviassignment.components.LoadingItem
 import com.mayur.naviassignment.data.pulls.Head
@@ -31,9 +31,11 @@ import java.util.*
 @Composable
 fun ClosedPRListUI(
     viewModel: PullsViewModel,
+    pulls: LazyPagingItems<PullRequest>?,
     sdf: SimpleDateFormat
 ) {
-    val pulls = viewModel.pulls.collectAsLazyPagingItems()
+    pulls ?: return
+
     LazyColumn {
         items(pulls.itemCount) { index ->
             ClosedPRItemUI(pulls[index], sdf)
@@ -69,7 +71,7 @@ fun ClosedPRItemUI(pull: PullRequest?, sdf: SimpleDateFormat) {
             .clip(RoundedCornerShape(14.dp)),
         shape = RoundedCornerShape(8.dp)
     ) {
-        Column(modifier = Modifier.background(Color(0xFFF5F5F5 ))) {
+        Column(modifier = Modifier.background(Color(0xFFF5F5F5))) {
             Row(modifier = Modifier.padding(12.dp)) {
                 AsyncImage(
                     modifier = Modifier
