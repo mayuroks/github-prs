@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -14,6 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -66,12 +68,13 @@ fun SearchBarUI(
                     trailingIcon = {
                         Image(
                             modifier = Modifier
-                                .size(16.dp)
+                                .size(20.dp)
                                 .clickable {
                                     onSearchIconClicked()
                                 },
                             painter = painterResource(id = R.drawable.ic_icons8_search),
-                            contentDescription = ""
+                            contentDescription = "",
+                            colorFilter = ColorFilter.tint(MaterialTheme.colors.primary)
                         )
                     }
                 )

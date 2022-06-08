@@ -19,9 +19,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import coil.compose.AsyncImage
 import com.mayur.naviassignment.components.LoadingItem
-import com.mayur.naviassignment.data.pulls.Head
 import com.mayur.naviassignment.data.pulls.PullRequest
-import com.mayur.naviassignment.data.pulls.Repo
 import com.mayur.naviassignment.data.pulls.User
 import naviassignment.R
 import java.text.SimpleDateFormat
@@ -101,13 +99,11 @@ fun ClosedPRItemUI(pull: PullRequest?, sdf: SimpleDateFormat) {
 @Composable
 fun ClosedPullUIPreview() {
     val pullRequest = PullRequest(
-        id = 12121,
         title = "IR] RFC: Have JVM codegen respect the GenerateClassFilter supplied to GenerationState",
         number = 38920,
         User("aeawewe", username = "kandersen"),
         createdAt = Date(),
         closedAt = Date(),
-        head = Head(Repo(fullName = "Docker-go/go-utils"))
     )
     val sdf = SimpleDateFormat("d MMMM yy")
 
