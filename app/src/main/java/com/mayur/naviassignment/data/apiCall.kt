@@ -14,7 +14,9 @@ suspend fun <T: Any> apiCall(networkCall: NetworkCall<T>): AsyncResult<T> {
     withContext(Dispatchers.IO) {
         result = try {
             val response = networkCall()
-            processResponse(result, response)
+            if (response.isSuccessful) {
+                processResponse(result, response)
+            } else processError(result, Throwable(response.errorBody()?.string()))
         } catch (t: Throwable) {
             processError(result, t)
         }
@@ -24,23 +26,19 @@ suspend fun <T: Any> apiCall(networkCall: NetworkCall<T>): AsyncResult<T> {
 }
 
 fun <T> processResponse(result: AsyncResult<T>, response: Response<T>): AsyncResult<T> {
-    if (response.isSuccessful) {
-        val body = response.body()
+    val body = response.body()
 
-        body?.let {
-            return result.success(it)
-
-        } ?: run {
-            if (response.code() == 200) {
-                Log.i(TAG, "response code is 200 but body is null")
-            }
-
-            return result.error(SERVER_ERROR_MSG, ResultState.ERROR)
+    body?.let {
+        return result.success(it)
+    } ?: run {
+        if (response.code() == 200) {
+            Log.i(TAG, "response code is 200 but body is null")
         }
-    }
 
-    return result
+        return result.error(SERVER_ERROR_MSG, ResultState.ERROR)
+    }
 }
+
 fun <T> processError(result: AsyncResult<T>, t: Throwable): AsyncResult<T> {
     Log.i(TAG, t.message.toString())
     t.printStackTrace()

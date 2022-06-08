@@ -17,7 +17,7 @@ class PullsPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PullRequest> {
         if (closedPRRequest.isBlank())
-            return LoadResult.Error(Exception("Some data is empty"))
+            return LoadResult.Error(Exception("Input error. Please check the query."))
 
         val nextPage = params.key ?: 1
         with(repository.getPulls(closedPRRequest, nextPage)) {
@@ -31,7 +31,7 @@ class PullsPagingSource(
                     )
                 }
                 isError() -> LoadResult.Error(Exception(errorMessage))
-                else -> LoadResult.Error(Exception("Some data is empty"))
+                else -> LoadResult.Error(Exception("Unknown error. Try after sometime"))
             }
         }
     }

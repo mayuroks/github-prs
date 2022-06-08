@@ -46,8 +46,8 @@ class PullsViewModel @Inject constructor(
         pagingState.value = PagingState.AppendError()
     }
 
-    fun handlePagingRefreshError() {
-        pagingState.value = PagingState.RefreshError()
+    fun handlePagingRefreshError(errorMsg: String) {
+        pagingState.value = PagingState.RefreshError(errorMsg)
     }
 
     class Factory(

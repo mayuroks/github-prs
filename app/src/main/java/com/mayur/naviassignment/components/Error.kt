@@ -13,7 +13,10 @@ import androidx.compose.ui.unit.dp
 
 
 @Composable
-fun ErrorUI(buttonClick: () -> Unit) {
+fun ErrorUI(
+    errorMsg: String,
+    buttonClick: () -> Unit,
+) {
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -22,7 +25,7 @@ fun ErrorUI(buttonClick: () -> Unit) {
     ) {
         Text(
             modifier = Modifier.padding(8.dp),
-            text = "Opps! Seems like a network issue",
+            text = errorMsg,
             textAlign = TextAlign.Center,
         )
         Button(

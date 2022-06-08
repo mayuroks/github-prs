@@ -13,9 +13,9 @@ sealed class PagingState {
         }
     }
 
-    class RefreshError : PagingState() {
+    class RefreshError(private val errorMsg: String) : PagingState() {
         override fun toString(): String {
-            return "Couldn't get items for your query"
+            return errorMsg
         }
     }
 }

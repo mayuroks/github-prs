@@ -54,7 +54,9 @@ fun ClosedPRListUI(
                 viewModel.handlePagingAppendError()
             }
             pulls.loadState.refresh is LoadState.Error -> {
-                viewModel.handlePagingRefreshError()
+                viewModel.handlePagingRefreshError(
+                    errorMsg = (pulls.loadState.refresh as LoadState.Error).error.message ?: "Loading Error"
+                )
             }
         }
     }

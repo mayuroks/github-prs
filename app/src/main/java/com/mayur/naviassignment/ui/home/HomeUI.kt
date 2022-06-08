@@ -26,7 +26,6 @@ fun HomeUI(
 ) {
     val pagingState by viewModel.pagingState
     val pullsFlow by viewModel.pulls
-
     val pulls = pullsFlow?.collectAsLazyPagingItems()
 
     LaunchedEffect(key1 = Unit) {
@@ -55,9 +54,13 @@ fun HomeUI(
             is PagingState.AppendError ->
                 showShortToast("More items cant be added")
             is PagingState.RefreshError ->
-                ErrorUI {
-                    viewModel.getClosedPRs()
-                }
+                ErrorUI(
+                    errorMsg = pagingState.toString(),
+                    buttonClick = {
+                        viewModel.getClosedPRs()
+                    }
+                )
+
             is PagingState.Loading -> {
                 Column(modifier = Modifier.fillMaxWidth()) {
                     Spacer(
