@@ -18,10 +18,4 @@ sealed class PagingState {
             return "Couldn't get items for your query"
         }
     }
-
-    class RetryLoading : PagingState() {
-        override fun toString(): String {
-            return ""
-        }
-    }
 }

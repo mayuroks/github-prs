@@ -21,8 +21,8 @@ class PullsViewModel @Inject constructor(
 
     val searchText = mutableStateOf<String>("freeCodeCamp/freeCodeCamp")
     val pagingState = mutableStateOf<PagingState>(PagingState.Loading())
-    val closedPRRequest = mutableStateOf(ClosedPRRequest("", "", ""))
-    var pulls = mutableStateOf<Flow<PagingData<PullRequest>>?>(null)
+    val pulls = mutableStateOf<Flow<PagingData<PullRequest>>?>(null)
+    private val closedPRRequest = mutableStateOf(ClosedPRRequest("", "", ""))
 
     fun getClosedPRs() {
         val _tmp = searchText.value.split("/")
@@ -30,12 +30,12 @@ class PullsViewModel @Inject constructor(
 
         } else {
             closedPRRequest.value = ClosedPRRequest(_tmp[0], _tmp[1])
+            val pagingSource = PullsPagingSource(repository, closedPRRequest.value)
+            pulls.value = Pager(PagingConfig(ITEMS_PER_PAGE)) {
+                pagingSource
+            }.flow
+            handlePagingLoading()
         }
-
-        val pagingSource = PullsPagingSource(repository, closedPRRequest.value)
-        pulls.value = Pager(PagingConfig(ITEMS_PER_PAGE)) {
-            pagingSource
-        }.flow
     }
 
     fun handlePagingLoading() {
@@ -48,10 +48,6 @@ class PullsViewModel @Inject constructor(
 
     fun handlePagingRefreshError() {
         pagingState.value = PagingState.RefreshError()
-    }
-
-    fun forceRefresh() {
-        pagingState.value = PagingState.RetryLoading()
     }
 
     class Factory(

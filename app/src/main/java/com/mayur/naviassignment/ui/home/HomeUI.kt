@@ -14,7 +14,6 @@ import com.mayur.naviassignment.ui.pulls.ClosedPRListUI
 import com.mayur.naviassignment.ui.pulls.PagingState
 import com.mayur.naviassignment.ui.pulls.PullsViewModel
 import com.mayur.naviassignment.ui.pulls.SearchBarUI
-import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
 
 // Show API error msg
@@ -84,13 +83,6 @@ fun HomeUI(
                         pulls = pulls,
                         sdf = sdf
                     )
-                }
-            }
-            is PagingState.RetryLoading -> {
-                viewModel.handlePagingLoading()
-                LaunchedEffect(key1 = Unit) {
-                    delay(100)
-                    pulls?.retry()
                 }
             }
         }
