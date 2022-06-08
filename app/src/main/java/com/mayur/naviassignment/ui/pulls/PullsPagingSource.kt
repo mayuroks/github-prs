@@ -5,13 +5,11 @@ import androidx.paging.PagingState
 import com.mayur.naviassignment.data.pulls.ClosedPRRequest
 import com.mayur.naviassignment.data.pulls.PullRequest
 import com.mayur.naviassignment.data.pulls.PullsRepository
-import javax.inject.Inject
 
-class PullsPagingSource @Inject constructor(
-    private val repository: PullsRepository
+class PullsPagingSource(
+    private val repository: PullsRepository,
+    private val closedPRRequest: ClosedPRRequest
 ) : PagingSource<Int, PullRequest>() {
-
-    private var closedPRRequest = ClosedPRRequest("", "")
 
     override fun getRefreshKey(state: PagingState<Int, PullRequest>): Int? {
         return null
@@ -32,15 +30,10 @@ class PullsPagingSource @Inject constructor(
                         nextKey = nextPage.plus(1)
                     )
                 }
+                isError() -> LoadResult.Error(Exception(errorMessage))
                 else -> LoadResult.Error(Exception("Some data is empty"))
             }
         }
-    }
-
-    suspend fun updateQueryParams(closedPRRequest: ClosedPRRequest) {
-        this.closedPRRequest = closedPRRequest
-        val loadParams = LoadParams.Refresh(0, ITEMS_PER_PAGE, false)
-        load(loadParams)
     }
 
     companion object {

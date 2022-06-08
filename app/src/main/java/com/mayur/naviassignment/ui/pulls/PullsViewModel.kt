@@ -3,7 +3,6 @@ package com.mayur.naviassignment.ui.pulls
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -13,7 +12,6 @@ import com.mayur.naviassignment.data.pulls.PullsRepository
 import com.mayur.naviassignment.ui.pulls.PullsPagingSource.Companion.ITEMS_PER_PAGE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,23 +19,21 @@ class PullsViewModel @Inject constructor(
     private val repository: PullsRepository
 ) : ViewModel() {
 
+    val searchText = mutableStateOf<String>("freeCodeCamp/freeCodeCamp")
     val pagingState = mutableStateOf<PagingState>(PagingState.Loading())
     val closedPRRequest = mutableStateOf(ClosedPRRequest("", "", ""))
+    var pulls = mutableStateOf<Flow<PagingData<PullRequest>>?>(null)
 
-    var pulls: Flow<PagingData<PullRequest>>? = null
-//        Pager(PagingConfig(ITEMS_PER_PAGE)) {
-//            pagingSource.apply {
-//                viewModelScope.launch { updateQueryParams(closedPRRequest.value) }
-//            }
-//        }.flow
+    fun getClosedPRs() {
+        val _tmp = searchText.value.split("/")
+        if (_tmp.size != 2) { // show some error
 
-    fun getClosedPRs(request: ClosedPRRequest) {
-        closedPRRequest.value = request
-        val pagingSource = PullsPagingSource_Factory.newInstance(repository)
-        pagingSource.apply {
-            viewModelScope.launch { updateQueryParams(closedPRRequest.value) }
+        } else {
+            closedPRRequest.value = ClosedPRRequest(_tmp[0], _tmp[1])
         }
-        pulls = Pager(PagingConfig(ITEMS_PER_PAGE)) {
+
+        val pagingSource = PullsPagingSource(repository, closedPRRequest.value)
+        pulls.value = Pager(PagingConfig(ITEMS_PER_PAGE)) {
             pagingSource
         }.flow
     }

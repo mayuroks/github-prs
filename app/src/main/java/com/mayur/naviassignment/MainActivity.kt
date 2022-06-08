@@ -19,7 +19,10 @@ class MainActivity : ComponentActivity() {
         setContentWithAppTheme {
             HomeUI(
                 viewModel = viewModel,
-                sdf = sdf
+                sdf = sdf,
+                onSearchIconClicked = {
+                    viewModel.getClosedPRs()
+                }
             )
         }
     }
