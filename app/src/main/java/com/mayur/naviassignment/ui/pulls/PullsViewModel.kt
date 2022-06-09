@@ -25,6 +25,12 @@ class PullsViewModel @Inject constructor(
     private val closedPRRequest = mutableStateOf(ClosedPRRequest("", "", ""))
 
     fun getClosedPRs() {
+        // Prevent multiple api calls for same input
+        // if already api call for same input is in progress
+        if (searchText.value == closedPRRequest.value.getFullRepoName()
+            && pagingState.value is PagingState.Loading
+        ) return
+
         val _tmp = searchText.value.split("/")
         if (_tmp.size != 2) { // show some error
 

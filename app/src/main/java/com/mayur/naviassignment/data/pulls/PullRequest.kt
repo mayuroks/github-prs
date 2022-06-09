@@ -21,6 +21,7 @@ class ClosedPRRequest(
     val state: String = CLOSED
 ) {
     fun isBlank() = owner.isBlank() or repo.isBlank() or state.isBlank()
+    fun getFullRepoName() = "$owner/$repo"
 }
 
 const val CLOSED = "closed"
