@@ -32,8 +32,8 @@ class PullsViewModel @Inject constructor(
         ) return
 
         val _tmp = searchText.value.split("/")
-        if (_tmp.size != 2) { // show some error
-
+        if (_tmp.size != 2) {
+            handlePagingRefreshError("Incorrect input. Try entering \"vuejs/vue\" without the quotes")
         } else {
             closedPRRequest.value = ClosedPRRequest(_tmp[0], _tmp[1])
             val pagingSource = PullsPagingSource(repository, closedPRRequest.value)

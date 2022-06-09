@@ -17,7 +17,7 @@ class PullsPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PullRequest> {
         if (closedPRRequest.isBlank())
-            return LoadResult.Error(Exception("Input error. Please check the query."))
+            return LoadResult.Error(Exception("Incorrect input. Try entering \"vuejs/vue\" without the quotes"))
 
         val nextPage = params.key ?: 1
         with(repository.getPulls(closedPRRequest, nextPage)) {
